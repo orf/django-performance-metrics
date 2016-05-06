@@ -123,5 +123,19 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+METRICS_BACKEND = "metrics.backend.influxdb"
 
-METRICS_CONSOLE_LOG = True
+METRICS_INFLUXDB_CONFIG = {
+    "host": "gb-lon-dev-stats.contextis.co.uk",
+    "database": "performance-metrics",
+    "username": None,
+    "password": None,
+    "proxies": {
+        "http": None,
+        "https": None
+    }
+}
+
+METRICS_INFLUXDB_TAGS = {
+    "project": "test"
+}

@@ -27,9 +27,8 @@ def my_view(request):
 
 
 After adding `metrics` to your `INSTALLED_APPS`, 
-`metrics.middleware.MetricsMiddleware` to your `MIDDLEWARE_CLASSES`
-and setting `METRICS_CONSOLE_LOG` to `True` you get the following output
-in the console:
+`metrics.middleware.MetricsMiddleware` to your `MIDDLEWARE_CLASSES` 
+you get the following output in the console:
 
 ```
  - response.time: 4019.8562145233154
@@ -42,6 +41,7 @@ in the console:
 
 You can wrap any number of functions with the `measure` decorator, or 
 use it as a context manager:
+
 ```
 with measure("something_expensive"):
     SomeModel.objects.all().delete()

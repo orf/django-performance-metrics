@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 from django.conf import settings
 from metrics.signals import metrics_received
-from metrics.utils import log_statistics
+from django.utils.module_loading import import_string
 
 
 class MetricsConfig(AppConfig):
@@ -9,5 +9,17 @@ class MetricsConfig(AppConfig):
     verbose_name = "django-performance-metrics"
 
     def ready(self):
-        if getattr(settings, "METRICS_CONSOLE_LOG", False) and settings.DEBUG:
-            metrics_received.connect(log_statistics)
+        backend = getattr(settings, "METRICS_BACKEND", "metrics.backend.console")
+        backend_log_funcs = [import_string("{0}.log".format(backend))]
+
+        if settings.DEBUG:
+            backend_log_funcs.append(
+                import_string("metrics.backend.console.log")
+            )
+
+        def receiver(metrics, **kwargs):
+            for func in backend_log_funcs:
+                func(metrics)
+
+        metrics_received.connect(receiver, weak=False)
+
