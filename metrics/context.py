@@ -52,6 +52,11 @@ class MetricsFrame(object):
     def join(self, other_frame):
         self._children.append(other_frame)
 
+    def record_child(self, *args, **kwargs):
+        new_frame = MetricsFrame()
+        new_frame.record(*args, **kwargs)
+        self.join(new_frame)
+
     def to_dict(self):
         return {
             "stats": [

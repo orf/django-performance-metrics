@@ -3,12 +3,13 @@ import time
 import metrics
 
 
-@metrics.measure()
+@metrics.profile()
 def expensive_sub_function():
     time.sleep(3)
+    metrics.measure("user_count", 100)
 
 
-@metrics.measure()
+@metrics.profile()
 def do_something_expensive():
     time.sleep(1)
     expensive_sub_function()

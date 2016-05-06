@@ -35,7 +35,7 @@ class MetricsMiddleware(object):
 
     def process_response(self, request, response):
         if hasattr(self, "frame"):
-            time_taken = (time.time() - self.start_time) * 1000
+            time_taken = round((time.time() - self.start_time) * 1000)
             self.metadata.update(self.extract_request_info(request))
             self.frame.record("response.time", time_taken, self.metadata)
             manager.end()

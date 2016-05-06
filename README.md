@@ -5,14 +5,16 @@ within your complex Django applications. It looks a bit like this:
 
 ```python
 from django.shortcuts import render
-from metrics import measure
+from metrics import profile, measure
 import time
 
-@measure()
+@profile()
 def expensive_sub_function():
     time.sleep(3)
+    measure("some_value", 150)
+    measure("some_other_value", 1337)
 
-@measure()
+@profile()
 def do_something_expensive():
     time.sleep(1)
     expensive_sub_function()
@@ -34,6 +36,8 @@ in the console:
    * Meta: is_authenticated=False username=None is_staff=False referrer=None is_superuser=False view=app.views.test_long is_ajax=False method=GET url=/ module=app.views
 	 - app.views.do_something_expensive: 4.002618789672852
 		 - app.views.expensive_sub_function: 3.002188205718994
+		 	 - some_value: 150
+		 	 - some_other_value: 1337
 ```
 
 You can wrap any number of functions with the `measure` decorator, or 
